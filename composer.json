@@ -1,5 +1,5 @@
 {
-    "name": "shadowfax/themes",
+    "name": "shadowfax/zf-themes",
     "type": "library",
     "description": "Theme system for ZF2",
     "keywords": [
@@ -7,7 +7,7 @@
     	"template",
     	"asset"
     ],
-    "homepage": "https://github.com/shadowfax/themes",
+    "homepage": "https://github.com/shadowfax/zf-themes",
     "license": "GPLv2",
     "minimum-stability": "dev",
     "require": {
