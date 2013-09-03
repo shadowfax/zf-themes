@@ -1,0 +1,19 @@
+{
+    "name": "shadowfax/themes",
+    "type": "library",
+    "description": "Theme system for ZF2",
+    "keywords": [
+    	"theme", 
+    	"template",
+    	"asset"
+    ],
+    "homepage": "http://github.com/shadowfax",
+    "license": "GPLv2",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "2.2.*"
+    },
+    "autoload": {
+        "psr-0": { "Themes\\": "library/" }
+    }
+}
