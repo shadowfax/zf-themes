@@ -9,10 +9,10 @@
  * @link      http://github.com/shadowfax
  * @license   http://www.gnu.org/licenses/gpl-2.0.html
  */
-namespace Themes\ThemeManager\Exception;
+namespace Themes\ThemeManager\Theme\Exception;
 
-class MissingDefaultThemeException extends \Exception
+class MissingThemeNameException extends \Exception
 {
-	protected $message = 'Missing default theme';
+	protected $message = 'Theme name is missing';
 	protected $code    = 500;
 }

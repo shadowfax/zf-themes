@@ -1,9 +1,19 @@
 <?php
+/**
+ * ZF-Themes
+ * 
+ * Theme engine for Zend Framework 2
+ * 
+ * @author    Juan Pedro Gonzalez
+ * @copyright Copyright (c) 2013 Juan Pedro Gonzalez
+ * @link      http://github.com/shadowfax
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html
+ */
 namespace Themes\ThemeManager;
 
+use Themes\ThemeManager\Adapter\FilesystemAdapter;
 
-
-
+use Themes\ThemeManager\Theme\Theme;
 
 use Zend\EventManager\EventManager;
 
@@ -16,8 +26,6 @@ use Zend\Mvc\MvcEvent;
 use Themes\ModuleManager\Feature\ThemeProviderInterface;
 
 use Zend\ModuleManager\ModuleEvent;
-
-use Themes\ThemeManager\Theme;
 
 use Zend\EventManager\EventManagerInterface;
 use Zend\ServiceManager\ServiceManager;
@@ -39,15 +47,27 @@ class ThemeManager implements
     protected $serviceManager;
     
     /**
+     * Theme manager adapter instance
+     * 
+     * @var Themes\ThemeManager\Adapter\AdapterInterface
+     */
+    protected $adapter;
+    /**
      * The loaded theme instance.
      * 
      * @var Themes\ThemeManager\Theme
      */
     protected $theme;
     
+    protected $themesFolder = 'themes';
+    
     public function __construct(ServiceManager $serviceManager)
     {
 		$this->serviceManager = $serviceManager;    
+		
+		// Sets the default adapter
+		$this->adapter = new FilesystemAdapter();
+		$this->adapter->setServiceManager($serviceManager);
 		
 		$events = $serviceManager->get('ModuleManager')->getEventManager();
         $events->attach(ModuleEvent::EVENT_LOAD_MODULE, new ThemeListener(null));
@@ -136,13 +156,23 @@ class ThemeManager implements
      * Gets the loaded theme.
      * 
      * @param string $name
+     * @return Themes\ThemeManager\Theme\ThemeInterface
      */
     public function getTheme($name = null)
     {
     	if (empty($name)) return $this->getDefaultTheme();
     	
-    	// TODO: Get configured theme
-    	return $this->getDefaultTheme();
+    	return $this->adapter->getActive();
+    }
+    
+    /**
+     * Get the configured folder for themes.
+     * 
+     * @return String
+     */
+    public function getThemesFolder()
+    {
+    	return $this->themesFolder;
     }
     
 }

@@ -1,6 +1,13 @@
 <?php
 /**
- * Ugly but does the job
+ * ZF-Themes
+ * 
+ * Theme engine for Zend Framework 2
+ * 
+ * @author    Juan Pedro Gonzalez
+ * @copyright Copyright (c) 2013 Juan Pedro Gonzalez
+ * @link      http://github.com/shadowfax
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html
  */
 return array(
   '123' => 'application/vnd.lotus-1-2-3',
