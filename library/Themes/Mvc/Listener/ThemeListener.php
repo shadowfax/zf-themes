@@ -78,6 +78,8 @@ class ThemeListener implements
     public function onBootstrap(MvcEvent $e)
     {
     	// TODO: INIT THEMES HERE
+    	
+    	// Build the assets route
     	$router = $e->getRouter();
     	
     	$router->addRoute('assets', array(
@@ -139,14 +141,28 @@ class ThemeListener implements
     		
     		$themeManager = $this->serviceManager->get('ThemeManager');
     		
-    		$assets_path = $module->getDir() . '/themes/' . $themeManager->getTheme()->getFolder() . '/assets';
-    		if (!is_dir($assets_path)) return;
+    		$assets_path = $module->getDir() . DIRECTORY_SEPARATOR . $themeManager->getThemesFolder() . DIRECTORY_SEPARATOR . $themeManager->getTheme()->getFolder() . '/assets';
+    		$assets_path = realpath($assets_path);
+    		if (empty($assets_path)) {
+    			return;
+    		} elseif (!is_dir($assets_path)) {
+    			return;
+    		}
+    		$assets_path = rtrim($assets_path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
     		
     		
     		// assemble the module route
     		$base_url = $e->getRouter()->assemble(array('module' => $module_name), array('name' => 'assets/module'));
     		$asset = $assets_path . substr($e->getRequest()->getRequestUri(), strlen($base_url));
-			if (!is_readable($asset)) return;
+    		$asset = realpath($asset);
+    		if (empty($asset)) {
+    			return;
+    		} elseif (substr_compare($asset, $assets_path, 0, strlen($assets_path), false) !== 0) {
+    			// Must be a directory transversal attack
+    			return;
+    		} elseif (!is_readable($asset)) {
+    			return;
+    		}
   
 			$content = file_get_contents($asset);
 			if (empty($content)) return;
